@@ -57,7 +57,8 @@ Thumbs.db
 # Vercel
 .vercel
 
-# Claude AI planning files
+# Claude AI
+.claude/
 PLAN_*.md
 
 # Legacy Python (can be removed once .venv is deleted)
