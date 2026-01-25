@@ -21,10 +21,20 @@ let speechClient = null
 function getSpeechClient() {
   if (!speechClient) {
     const credentialsPath = process.env.GOOGLE_APPLICATION_CREDENTIALS
+    console.log('GOOGLE_APPLICATION_CREDENTIALS:', credentialsPath || '(not set)')
+
     if (credentialsPath) {
       const absolutePath = path.isAbsolute(credentialsPath)
         ? credentialsPath
         : path.join(__dirname, '..', credentialsPath)
+
+      // Check if file exists
+      const fs = require('fs')
+      if (!fs.existsSync(absolutePath)) {
+        console.error('ERROR: Credentials file not found at:', absolutePath)
+      } else {
+        console.log('Credentials file found at:', absolutePath)
+      }
 
       speechClient = new SpeechClient({
         keyFilename: absolutePath,
@@ -32,6 +42,7 @@ function getSpeechClient() {
       console.log('Google Cloud Speech client initialized with:', absolutePath)
     } else {
       // Try default credentials
+      console.log('No GOOGLE_APPLICATION_CREDENTIALS set, trying default credentials...')
       speechClient = new SpeechClient()
       console.log('Google Cloud Speech client initialized with default credentials')
     }
@@ -126,6 +137,7 @@ class TranscriptionSession {
   createStream() {
     try {
       const client = getSpeechClient()
+      console.log('Creating recognition stream...')
 
       const request = {
         config: {
@@ -137,12 +149,16 @@ class TranscriptionSession {
         },
         interimResults: true,
       }
+      console.log('Request config:', JSON.stringify(request, null, 2))
 
       this.recognizeStream = client
         .streamingRecognize(request)
         .on('error', (err) => {
-          console.error('Recognition stream error:', err)
-          console.error('Error details:', err.code, err.details)
+          console.error('=== RECOGNITION STREAM ERROR ===')
+          console.error('Error message:', err.message)
+          console.error('Error code:', err.code)
+          console.error('Error details:', err.details)
+          console.error('Full error:', err)
           // Don't send error for expected timeouts
           if (!err.message.includes('exceeded') && this.ws.readyState === 1) {
             this.ws.send(JSON.stringify({
@@ -219,8 +235,12 @@ class TranscriptionSession {
   }
 
   processAudio(audioData) {
-    if (!this.isActive || !this.recognizeStream) {
-      console.log('Cannot process audio: stream not active')
+    if (!this.isActive) {
+      console.log('Cannot process audio: session not active')
+      return
+    }
+    if (!this.recognizeStream) {
+      console.log('Cannot process audio: recognizeStream is null')
       return
     }
 
@@ -228,7 +248,7 @@ class TranscriptionSession {
       // Write audio data to the stream
       this.audioChunkCount = (this.audioChunkCount || 0) + 1
       if (this.audioChunkCount <= 5 || this.audioChunkCount % 20 === 0) {
-        console.log(`Audio chunk #${this.audioChunkCount}: ${audioData.length} bytes`)
+        console.log(`Audio chunk #${this.audioChunkCount}: ${audioData.length} bytes, stream writable: ${this.recognizeStream.writable}`)
       }
       const written = this.recognizeStream.write(audioData)
       if (!written) {
@@ -236,6 +256,7 @@ class TranscriptionSession {
       }
     } catch (err) {
       console.error('Error writing to stream:', err.message)
+      console.error('Full error:', err)
     }
   }
 
