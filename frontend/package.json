@@ -7,7 +7,7 @@
     "dev:next": "next dev",
     "build": "next build",
     "start": "NODE_ENV=production node server.js",
-    "lint": "next lint"
+    "lint": "eslint src --ext .ts,.tsx"
   },
   "dependencies": {
     "@google-cloud/speech": "^7.2.1",

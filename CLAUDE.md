@@ -69,7 +69,7 @@ Browser (streaming UI)  ← WebSocket ← AI response chunks
 - TypeScript with strict mode
 - ESLint flat config (`eslint.config.mjs`)
 - Google Cloud Speech-to-Text (streaming API, WEBM_OPUS encoding)
-- Google Gemini via `@langchain/google-genai`
+- Google Gemini via `@langchain/google-genai` (model: `gemini-3-flash-preview` - do not change)
 
 ## Brand Guidelines
 

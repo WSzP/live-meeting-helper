@@ -1,5 +1,4 @@
 const { createServer } = require('http')
-const { parse } = require('url')
 const next = require('next')
 const { WebSocketServer } = require('ws')
 const { SpeechClient } = require('@google-cloud/speech')
@@ -64,11 +63,11 @@ async function handleAIRequest(ws, transcript, question) {
   try {
     const client = getGeminiClient()
 
-    const systemPrompt = `You are a helpful meeting assistant. Analyze the meeting transcript and provide insights, answer questions, or summarize key points. Be concise and actionable. Focus on what's most important.`
+    const systemPrompt = `You are a concise meeting assistant. Give SHORT, direct answers. No preamble, no repetition, no unnecessary explanation. If asked a question, answer it directly in 1-3 sentences. If no question, give 2-3 bullet points max.`
 
     const userPrompt = question
-      ? `Based on this meeting transcript:\n\n${transcript}\n\nQuestion: ${question}`
-      : `Based on this meeting transcript, provide helpful insights, action items, or answer any questions that were asked:\n\n${transcript}`
+      ? `Transcript: ${transcript}\n\nAnswer this briefly: ${question}`
+      : `Transcript: ${transcript}\n\nBriefly answer any questions asked, or give 2-3 key points.`
 
     const stream = await client.stream([
       ['system', systemPrompt],
@@ -142,7 +141,8 @@ class TranscriptionSession {
       this.recognizeStream = client
         .streamingRecognize(request)
         .on('error', (err) => {
-          console.error('Recognition stream error:', err.message)
+          console.error('Recognition stream error:', err)
+          console.error('Error details:', err.code, err.details)
           // Don't send error for expected timeouts
           if (!err.message.includes('exceeded') && this.ws.readyState === 1) {
             this.ws.send(JSON.stringify({
@@ -153,6 +153,7 @@ class TranscriptionSession {
           this.restartStream()
         })
         .on('data', (data) => {
+          console.log('Recognition data received:', JSON.stringify(data, null, 2))
           if (data.results?.[0]) {
             const result = data.results[0]
             const transcript = result.alternatives?.[0]?.transcript || ''
@@ -219,12 +220,20 @@ class TranscriptionSession {
 
   processAudio(audioData) {
     if (!this.isActive || !this.recognizeStream) {
+      console.log('Cannot process audio: stream not active')
       return
     }
 
     try {
       // Write audio data to the stream
-      this.recognizeStream.write(audioData)
+      this.audioChunkCount = (this.audioChunkCount || 0) + 1
+      if (this.audioChunkCount <= 5 || this.audioChunkCount % 20 === 0) {
+        console.log(`Audio chunk #${this.audioChunkCount}: ${audioData.length} bytes`)
+      }
+      const written = this.recognizeStream.write(audioData)
+      if (!written) {
+        console.log('Stream buffer full, backpressure')
+      }
     } catch (err) {
       console.error('Error writing to stream:', err.message)
     }
@@ -252,7 +261,11 @@ class TranscriptionSession {
 app.prepare().then(() => {
   const server = createServer(async (req, res) => {
     try {
-      const parsedUrl = parse(req.url, true)
+      const url = new URL(req.url, `http://${hostname}:${port}`)
+      const parsedUrl = {
+        pathname: url.pathname,
+        query: Object.fromEntries(url.searchParams),
+      }
       await handle(req, res, parsedUrl)
     } catch (err) {
       console.error('Error handling request:', err)
@@ -272,26 +285,33 @@ app.prepare().then(() => {
 
     const session = new TranscriptionSession(ws)
     session.start()
+    let firstAudioChunkLogged = false
 
     ws.on('message', async (message) => {
+      // Convert Buffer to string to check if it's a JSON message
+      const buffer = Buffer.isBuffer(message) ? message : Buffer.from(message)
+      const messageStr = buffer.toString('utf8')
+
       // Check if it's a JSON message (AI request)
-      if (typeof message === 'string') {
+      if (messageStr.startsWith('{')) {
         try {
-          const data = JSON.parse(message)
+          const data = JSON.parse(messageStr)
           if (data.type === 'ai_request') {
+            console.log('AI request received:', data.question || 'no specific question')
             await handleAIRequest(ws, data.context, data.question)
+            return
           }
         } catch (err) {
-          // Not JSON, ignore
+          // Not valid JSON, treat as audio data
         }
-        return
       }
 
       // Receive audio data and process it
-      if (Buffer.isBuffer(message) || message instanceof ArrayBuffer) {
-        const buffer = Buffer.isBuffer(message) ? message : Buffer.from(message)
-        session.processAudio(buffer)
+      if (!firstAudioChunkLogged) {
+        console.log(`First audio chunk received: ${buffer.length} bytes`)
+        firstAudioChunkLogged = true
       }
+      session.processAudio(buffer)
     })
 
     ws.on('close', () => {

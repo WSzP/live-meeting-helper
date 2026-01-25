@@ -2,12 +2,15 @@
 [![Next.js 16](https://img.shields.io/badge/Next.js-16-black.svg?logo=next.js&logoColor=white)](https://nextjs.org/)
 [![LangChain](https://img.shields.io/badge/LangChain-1C3C3C.svg?logo=langchain&logoColor=white)](https://www.langchain.com/)
 [![Google Cloud](https://img.shields.io/badge/Google_Cloud-Speech--to--Text-4285F4.svg?logo=googlecloud&logoColor=white)](https://cloud.google.com/speech-to-text)
+[![Lint](https://github.com/WSzP/live-meeting-helper/actions/workflows/lint.yml/badge.svg?branch=main)](https://github.com/WSzP/live-meeting-helper/actions/workflows/lint.yml)
 
 <p><img src="assets/lmh-logo.webp" width="200" alt="Live Meeting Helper Logo"></p>
 
 # Live Meeting Helper
 
 **Real-time meeting transcription with AI-powered insights.** Captures live audio from your microphone, transcribes it in real-time using Google Cloud Speech-to-Text, and provides AI-generated summaries and answers using Google Gemini.
+
+<p><img src="assets\screenshot-01.jpg" width="100%" alt="Live Meeting Helper Screenshot"></p>
 
 ## Features
 

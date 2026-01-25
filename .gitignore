@@ -62,8 +62,11 @@ Thumbs.db
 .claude/
 PLAN_*.md
 
-# Legacy Python (can be removed once .venv is deleted)
+# Legacy Python
 .venv/
 __pycache__/
 *.py[cod]
 .mypy_cache/
+
+# nul file
+nul
