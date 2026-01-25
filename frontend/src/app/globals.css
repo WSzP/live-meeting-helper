@@ -1,14 +1,22 @@
 @import "tailwindcss";
 
+/* Inter font from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
 :root {
-  --background: #0a0a0a;
-  --foreground: #ededed;
+  /* Brand colors */
+  --color-night-navy: #040932;
+  --color-cloud-lilac: #F3F1FA;
+  --color-pulse-cyan: #0BB2F2;
+
+  --background: var(--color-night-navy);
+  --foreground: var(--color-cloud-lilac);
 }
 
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Inter', Arial, Helvetica, sans-serif;
 }
 
 /* Audio level meter styles */

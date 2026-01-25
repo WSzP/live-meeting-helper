@@ -70,3 +70,21 @@ Browser (streaming UI)  ← WebSocket ← AI response chunks
 - ESLint flat config (`eslint.config.mjs`)
 - Google Cloud Speech-to-Text (streaming API, WEBM_OPUS encoding)
 - Google Gemini via `@langchain/google-genai`
+
+## Brand Guidelines
+
+### Colors
+
+| Name | Hex | CSS Variable | Usage |
+| ---- | --- | ------------ | ----- |
+| **Night Navy** | `#040932` | `--color-night-navy` | Background |
+| **Cloud Lilac** | `#F3F1FA` | `--color-cloud-lilac` | Primary text over dark backgrounds |
+| **Pulse Cyan** | `#0BB2F2` | `--color-pulse-cyan` | Realtime indicators, highlights, badges, waveform accents |
+
+### Logo
+
+- Logo text: "**Live**" and "**Helper**" in Cloud Lilac, "**Meeting**" in Pulse Cyan
+- Assets located in `assets/`:
+  - `lmh-logo.png` - High quality PNG
+  - `lmh-logo.webp` - Web optimized
+  - `lmh-open-graph.png` - Social media/Open Graph image

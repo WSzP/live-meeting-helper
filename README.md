@@ -3,6 +3,8 @@
 [![LangChain](https://img.shields.io/badge/LangChain-1C3C3C.svg?logo=langchain&logoColor=white)](https://www.langchain.com/)
 [![Google Cloud](https://img.shields.io/badge/Google_Cloud-Speech--to--Text-4285F4.svg?logo=googlecloud&logoColor=white)](https://cloud.google.com/speech-to-text)
 
+![Live Meeting Helper](assets/lmh-logo.webp)
+
 # Live Meeting Helper
 
 **Real-time meeting transcription with AI-powered insights.** Captures live audio from your microphone, transcribes it in real-time using Google Cloud Speech-to-Text, and provides AI-generated summaries and answers using Google Gemini.
@@ -163,6 +165,26 @@ pnpm lint
 - **5-minute streaming limit**: Google Cloud Speech-to-Text has a ~305 second limit per stream. The app automatically restarts streams to handle longer meetings.
 - **Browser support**: Requires a modern browser with MediaRecorder API support (Chrome, Firefox, Edge)
 - **English only**: Currently configured for `en-US`. Can be modified in `server.js`
+
+## Brand
+
+### Colors
+
+| Name | Hex | Usage |
+| ---- | --- | ----- |
+| **Night Navy** | `#040932` | Background |
+| **Cloud Lilac** | `#F3F1FA` | Primary text color over dark backgrounds |
+| **Pulse Cyan** | `#0BB2F2` | "Live" feeling - realtime indicators, highlights, badges, waveform accents |
+
+### Logo
+
+In the logo text: **Live** and **Helper** use Cloud Lilac, **Meeting** uses Pulse Cyan.
+
+| Asset | Path | Usage |
+| ----- | ---- | ----- |
+| Logo (PNG) | `assets/lmh-logo.png` | High quality |
+| Logo (WebP) | `assets/lmh-logo.webp` | Web optimized |
+| Open Graph | `assets/lmh-open-graph.png` | Social media previews |
 
 ## License
 

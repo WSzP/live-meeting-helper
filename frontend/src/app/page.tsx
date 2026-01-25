@@ -71,15 +71,23 @@ export default function Home() {
   const error = recorderError || transcriptionError
 
   return (
-    <main className="min-h-screen bg-gray-950 text-gray-100">
+    <main className="min-h-screen bg-[var(--color-night-navy)] text-[var(--color-cloud-lilac)]">
       {/* Header */}
-      <header className="border-b border-gray-800 bg-gray-900/50">
-        <div className="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
-          <h1 className="text-xl font-bold flex items-center gap-2">
-            <span>🎙️</span>
-            <span>Live Meeting Helper</span>
+      <header className="border-b border-white/10 bg-white/5">
+        <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+          <h1 className="text-xl font-semibold flex items-center gap-3">
+            <img
+              src="/lmh-logo.webp"
+              alt="Live Meeting Helper logo"
+              className="h-8 w-auto"
+            />
+            <span>
+              <span className="text-[var(--color-cloud-lilac)]">Live </span>
+              <span className="text-[var(--color-pulse-cyan)]">Meeting </span>
+              <span className="text-[var(--color-cloud-lilac)]">Helper</span>
+            </span>
           </h1>
-          <span className="text-sm text-gray-500">
+          <span className="text-sm text-[var(--color-cloud-lilac)]/60">
             Real-time Transcription
           </span>
         </div>
@@ -175,8 +183,8 @@ export default function Home() {
       </div>
 
       {/* Footer */}
-      <footer className="border-t border-gray-800 mt-auto">
-        <div className="max-w-7xl mx-auto px-4 py-4 text-center text-sm text-gray-600">
+      <footer className="border-t border-white/10 mt-auto">
+        <div className="max-w-7xl mx-auto px-4 py-4 text-center text-sm text-[var(--color-cloud-lilac)]/50">
           Created by Peter W. Szabo, in 2026.
         </div>
       </footer>
