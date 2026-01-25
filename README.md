@@ -106,6 +106,7 @@ live-meeting-helper/
 │   │   └── hooks/           # Custom React hooks
 │   ├── server.js            # Custom Node.js server with WebSocket
 │   ├── next.config.ts       # Next.js configuration
+│   ├── eslint.config.mjs    # ESLint flat config
 │   └── postcss.config.js    # PostCSS/Tailwind configuration
 ├── docs/                    # Documentation
 ├── .gcp/                    # Google Cloud credentials (gitignored)
@@ -119,7 +120,7 @@ live-meeting-helper/
 2. **WebSocket Streaming**: Audio chunks are streamed to the server via WebSocket every 250ms
 3. **Speech Recognition**: Server pipes audio to Google Cloud Speech-to-Text streaming API
 4. **Real-Time Results**: Interim and final transcription results are sent back to the client
-5. **AI Processing**: When requested, transcript is sent to Gemini for analysis via LangChain
+5. **AI Processing**: When requested, transcript is sent to Gemini (gemini-3-flash-preview) via LangChain, with responses streaming back through the same WebSocket connection
 
 ### Architecture
 
@@ -165,7 +166,7 @@ pnpm lint
 
 ## License
 
-MIT License
+Apache License 2.0
 
 ---
 
