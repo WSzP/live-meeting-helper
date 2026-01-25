@@ -7,6 +7,10 @@ export interface TranscriptionState {
   interimText: string
   isConnected: boolean
   error: string | null
+  aiAnswer: string
+  isAILoading: boolean
+  isAIStreaming: boolean
+  aiError: string | null
 }
 
 export interface UseTranscriptionReturn extends TranscriptionState {
@@ -14,6 +18,8 @@ export interface UseTranscriptionReturn extends TranscriptionState {
   disconnect: () => void
   sendAudio: (data: Blob) => void
   clearTranscript: () => void
+  requestAIAnswer: (question?: string) => void
+  clearAIAnswer: () => void
 }
 
 export function useTranscription(): UseTranscriptionReturn {
@@ -22,6 +28,10 @@ export function useTranscription(): UseTranscriptionReturn {
     interimText: '',
     isConnected: false,
     error: null,
+    aiAnswer: '',
+    isAILoading: false,
+    isAIStreaming: false,
+    aiError: null,
   })
 
   const wsRef = useRef<WebSocket | null>(null)
@@ -68,6 +78,25 @@ export function useTranscription(): UseTranscriptionReturn {
             }
           } else if (data.type === 'error') {
             setState(prev => ({ ...prev, error: data.message }))
+          } else if (data.type === 'ai_chunk') {
+            setState(prev => ({
+              ...prev,
+              aiAnswer: prev.aiAnswer + data.text,
+              isAILoading: false,
+              isAIStreaming: true,
+            }))
+          } else if (data.type === 'ai_complete') {
+            setState(prev => ({
+              ...prev,
+              isAIStreaming: false,
+            }))
+          } else if (data.type === 'ai_error') {
+            setState(prev => ({
+              ...prev,
+              isAILoading: false,
+              isAIStreaming: false,
+              aiError: data.message,
+            }))
           }
         } catch (err) {
           console.error('Error parsing WebSocket message:', err)
@@ -124,6 +153,43 @@ export function useTranscription(): UseTranscriptionReturn {
     setState(prev => ({ ...prev, transcript: '', interimText: '' }))
   }, [])
 
+  const requestAIAnswer = useCallback((question?: string) => {
+    if (wsRef.current?.readyState !== WebSocket.OPEN) {
+      setState(prev => ({ ...prev, aiError: 'Not connected' }))
+      return
+    }
+
+    setState(prev => {
+      if (!prev.transcript) {
+        return { ...prev, aiError: 'No transcript available' }
+      }
+
+      wsRef.current?.send(JSON.stringify({
+        type: 'ai_request',
+        context: prev.transcript,
+        question,
+      }))
+
+      return {
+        ...prev,
+        aiAnswer: '',
+        isAILoading: true,
+        isAIStreaming: false,
+        aiError: null,
+      }
+    })
+  }, [])
+
+  const clearAIAnswer = useCallback(() => {
+    setState(prev => ({
+      ...prev,
+      aiAnswer: '',
+      isAILoading: false,
+      isAIStreaming: false,
+      aiError: null,
+    }))
+  }, [])
+
   // Cleanup on unmount
   useEffect(() => {
     return () => {
@@ -137,5 +203,7 @@ export function useTranscription(): UseTranscriptionReturn {
     disconnect,
     sendAudio,
     clearTranscript,
+    requestAIAnswer,
+    clearAIAnswer,
   }
 }

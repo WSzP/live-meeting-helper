@@ -3,6 +3,7 @@ const { parse } = require('url')
 const next = require('next')
 const { WebSocketServer } = require('ws')
 const { SpeechClient } = require('@google-cloud/speech')
+const { ChatGoogleGenerativeAI } = require('@langchain/google-genai')
 const path = require('path')
 
 // Load environment variables
@@ -37,6 +38,65 @@ function getSpeechClient() {
     }
   }
   return speechClient
+}
+
+// Gemini AI client
+let geminiClient = null
+
+function getGeminiClient() {
+  if (!geminiClient) {
+    const apiKey = process.env.GOOGLE_API_KEY
+    if (!apiKey) {
+      throw new Error('GOOGLE_API_KEY not set in environment')
+    }
+    geminiClient = new ChatGoogleGenerativeAI({
+      model: 'gemini-3-flash-preview',
+      apiKey: apiKey,
+      streaming: true,
+    })
+    console.log('Gemini AI client initialized')
+  }
+  return geminiClient
+}
+
+// Handle AI answer requests
+async function handleAIRequest(ws, transcript, question) {
+  try {
+    const client = getGeminiClient()
+
+    const systemPrompt = `You are a helpful meeting assistant. Analyze the meeting transcript and provide insights, answer questions, or summarize key points. Be concise and actionable. Focus on what's most important.`
+
+    const userPrompt = question
+      ? `Based on this meeting transcript:\n\n${transcript}\n\nQuestion: ${question}`
+      : `Based on this meeting transcript, provide helpful insights, action items, or answer any questions that were asked:\n\n${transcript}`
+
+    const stream = await client.stream([
+      ['system', systemPrompt],
+      ['human', userPrompt],
+    ])
+
+    for await (const chunk of stream) {
+      const text = chunk.content
+      if (text && ws.readyState === 1) {
+        ws.send(JSON.stringify({
+          type: 'ai_chunk',
+          text: text,
+        }))
+      }
+    }
+
+    if (ws.readyState === 1) {
+      ws.send(JSON.stringify({ type: 'ai_complete' }))
+    }
+  } catch (err) {
+    console.error('AI request error:', err.message)
+    if (ws.readyState === 1) {
+      ws.send(JSON.stringify({
+        type: 'ai_error',
+        message: err.message,
+      }))
+    }
+  }
 }
 
 // Audio processing utilities
@@ -213,7 +273,20 @@ app.prepare().then(() => {
     const session = new TranscriptionSession(ws)
     session.start()
 
-    ws.on('message', (message) => {
+    ws.on('message', async (message) => {
+      // Check if it's a JSON message (AI request)
+      if (typeof message === 'string') {
+        try {
+          const data = JSON.parse(message)
+          if (data.type === 'ai_request') {
+            await handleAIRequest(ws, data.context, data.question)
+          }
+        } catch (err) {
+          // Not JSON, ignore
+        }
+        return
+      }
+
       // Receive audio data and process it
       if (Buffer.isBuffer(message) || message instanceof ArrayBuffer) {
         const buffer = Buffer.isBuffer(message) ? message : Buffer.from(message)

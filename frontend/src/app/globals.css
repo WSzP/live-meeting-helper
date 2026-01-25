@@ -28,8 +28,15 @@ body {
 
 /* Transcript container styles */
 .transcript-container {
-  min-height: 400px;
-  max-height: 60vh;
+  min-height: 200px;
+  max-height: 35vh;
+  overflow-y: auto;
+}
+
+/* AI answer container styles */
+.ai-answer-container {
+  min-height: 200px;
+  max-height: 35vh;
   overflow-y: auto;
 }
 

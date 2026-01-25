@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useAudioRecorder } from '@/hooks/useAudioRecorder'
 import { useTranscription } from '@/hooks/useTranscription'
+import { AIAnswerDisplay } from '@/components/AIAnswerDisplay'
 import { RecordingControls } from '@/components/RecordingControls'
 import { TranscriptDisplay } from '@/components/TranscriptDisplay'
 import { MicTest } from '@/components/MicTest'
@@ -15,10 +16,16 @@ export default function Home() {
     interimText,
     isConnected,
     error: transcriptionError,
+    aiAnswer,
+    isAILoading,
+    isAIStreaming,
+    aiError,
     connect,
     disconnect,
     sendAudio,
     clearTranscript,
+    requestAIAnswer,
+    clearAIAnswer,
   } = useTranscription()
 
   const handleAudioData = useCallback((data: Blob) => {
@@ -139,13 +146,28 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Right Panel - Transcript */}
-          <div className="lg:col-span-2">
-            <div className="bg-gray-900 rounded-xl p-6 border border-gray-800 h-full">
+          {/* Right Panel - Transcript + AI */}
+          <div className="lg:col-span-2 flex flex-col gap-4">
+            {/* Top: Transcript */}
+            <div className="bg-gray-900 rounded-xl p-6 border border-gray-800 flex-1 min-h-[300px]">
               <TranscriptDisplay
                 transcript={transcript}
                 interimText={interimText}
                 isRecording={isRecording}
+              />
+            </div>
+
+            {/* Bottom: AI Answer */}
+            <div className="bg-gray-900 rounded-xl p-6 border border-gray-800 flex-1 min-h-[300px]">
+              <AIAnswerDisplay
+                answer={aiAnswer}
+                isLoading={isAILoading}
+                isStreaming={isAIStreaming}
+                error={aiError}
+                onAskAI={() => requestAIAnswer()}
+                onClear={clearAIAnswer}
+                hasTranscript={!!transcript}
+                isConnected={isConnected}
               />
             </div>
           </div>
