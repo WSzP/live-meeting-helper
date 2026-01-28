@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useRef, useCallback, useEffect } from 'react'
+import { useTranslations } from 'next-intl'
 import { AudioLevelMeter } from './AudioLevelMeter'
 
 interface MicTestProps {
@@ -8,6 +9,8 @@ interface MicTestProps {
 }
 
 export function MicTest({ className = '' }: MicTestProps) {
+  const t = useTranslations('micTest')
+  const tErrors = useTranslations('errors')
   const [isRecording, setIsRecording] = useState(false)
   const [audioUrl, setAudioUrl] = useState<string | null>(null)
   const [audioLevel, setAudioLevel] = useState(0)
@@ -119,9 +122,9 @@ export function MicTest({ className = '' }: MicTestProps) {
       }, 3000)
 
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to access microphone')
+      setError(err instanceof Error ? err.message : tErrors('microphoneAccess'))
     }
-  }, [cleanup])
+  }, [cleanup, tErrors])
 
   const clearTest = useCallback(() => {
     if (audioUrl) {
@@ -148,7 +151,7 @@ export function MicTest({ className = '' }: MicTestProps) {
           <svg className="w-4 h-4 text-[var(--color-pulse-cyan)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
           </svg>
-          Microphone Test
+          {t('title')}
         </h3>
         {isRecording && (
           <span className="status-badge status-badge-live">
@@ -159,7 +162,7 @@ export function MicTest({ className = '' }: MicTestProps) {
       </div>
 
       <p className="text-xs text-[var(--color-cloud-lilac)]/40 mb-4">
-        Record a 3-second sample to test your microphone
+        {t('description')}
       </p>
 
       <button
@@ -178,7 +181,7 @@ export function MicTest({ className = '' }: MicTestProps) {
               <span className="absolute inline-flex h-full w-full rounded-full bg-[var(--color-pulse-cyan)] recording-indicator" />
               <span className="relative inline-flex rounded-full h-2 w-2 bg-[var(--color-pulse-cyan)]" />
             </span>
-            Recording...
+            {t('recording')}
           </>
         ) : (
           <>
@@ -186,7 +189,7 @@ export function MicTest({ className = '' }: MicTestProps) {
               <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z" />
               <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z" />
             </svg>
-            Test Microphone
+            {t('testButton')}
           </>
         )}
       </button>
@@ -213,14 +216,14 @@ export function MicTest({ className = '' }: MicTestProps) {
           </div>
           <div className="flex justify-between items-center">
             <span className="text-xs text-[var(--color-cloud-lilac)]/40">
-              Recorded {frameCount} chunks
+              {t('recorded', { count: frameCount })}
             </span>
             <button
               type="button"
               onClick={clearTest}
               className="btn-pill text-xs"
             >
-              Clear
+              {t('clear')}
             </button>
           </div>
         </div>

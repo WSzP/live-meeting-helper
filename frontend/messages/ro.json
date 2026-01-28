@@ -1,0 +1,66 @@
+{
+  "metadata": {
+    "title": "Live Meeting Helper",
+    "description": "Transcriere în timp real a întâlnirilor cu Google Cloud Speech-to-Text",
+    "ogAlt": "Live Meeting Helper"
+  },
+  "header": {
+    "title": "Live Meeting Helper",
+    "tagline": "Transcriere cu AI",
+    "live": "Live",
+    "github": "GitHub"
+  },
+  "recording": {
+    "title": "Controale de înregistrare",
+    "connected": "Conectat",
+    "startRecording": "Începe înregistrarea",
+    "stopRecording": "Oprește înregistrarea",
+    "clearTranscript": "Șterge transcrierea",
+    "downloadTranscript": "Descarcă transcrierea",
+    "sampleRate": "Rata de eșantionare"
+  },
+  "aiMode": {
+    "activeAI": "Asistență AI activă",
+    "transcribeOnly": "Doar transcriere",
+    "ariaLabel": "Comutator asistent AI"
+  },
+  "transcript": {
+    "title": "Transcriere",
+    "recording": "Înregistrare",
+    "chars": "caractere",
+    "listening": "Ascultăm vorbirea...",
+    "startSpeaking": "Începeți să vorbiți pentru a vedea transcrierea",
+    "ready": "Pregătit pentru transcriere",
+    "clickStart": "Faceți clic pe \"Începe înregistrarea\" pentru a începe capturarea întâlnirii"
+  },
+  "ai": {
+    "title": "Asistent AI",
+    "streaming": "Streaming",
+    "clear": "Șterge",
+    "analyzing": "Analizăm transcrierea...",
+    "generating": "Generăm informații inteligente",
+    "disabled": "Asistent AI dezactivat",
+    "enablePrompt": "Activați asistentul AI pentru analiză automată",
+    "insights": "Informații bazate pe AI",
+    "startPrompt": "Începeți înregistrarea și informațiile vor apărea automat",
+    "enableTooltip": "Faceți clic pentru a activa asistentul AI"
+  },
+  "micTest": {
+    "title": "Test microfon",
+    "description": "Înregistrați un eșantion de 3 secunde pentru a testa microfonul",
+    "testButton": "Testează microfonul",
+    "recording": "Înregistrare...",
+    "recorded": "{count} fragmente înregistrate",
+    "clear": "Șterge"
+  },
+  "audioLevel": {
+    "label": "Nivel audio",
+    "silent": "Silențios",
+    "quiet": "Încet",
+    "good": "Bun",
+    "loud": "Tare"
+  },
+  "errors": {
+    "microphoneAccess": "Nu s-a putut accesa microfonul"
+  }
+}

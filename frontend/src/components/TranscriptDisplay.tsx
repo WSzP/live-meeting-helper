@@ -1,5 +1,7 @@
 'use client'
 
+import { useTranslations } from 'next-intl'
+
 interface TranscriptDisplayProps {
   transcript: string
   interimText: string
@@ -11,23 +13,24 @@ export function TranscriptDisplay({
   interimText,
   isRecording,
 }: TranscriptDisplayProps) {
+  const t = useTranslations('transcript')
   const hasContent = transcript || interimText
 
   return (
     <div className="h-full flex flex-col">
       <div className="flex justify-between items-center mb-4">
         <div className="flex items-center gap-3">
-          <h2 className="section-header">Transcript</h2>
+          <h2 className="section-header">{t('title')}</h2>
           {isRecording && (
             <span className="status-badge status-badge-live">
               <span className="live-dot" />
-              Recording
+              {t('recording')}
             </span>
           )}
         </div>
         {hasContent && (
           <span className="text-xs text-[var(--color-cloud-lilac)]/40 font-mono">
-            {transcript.length.toLocaleString()} chars
+            {transcript.length.toLocaleString()} {t('chars')}
             {interimText && (
               <span className="text-[var(--color-pulse-cyan)]/60">
                 {' '}+{interimText.length}
@@ -75,10 +78,10 @@ export function TranscriptDisplay({
                     </div>
                   </div>
                   <p className="text-[var(--color-cloud-lilac)]/70 text-sm font-medium">
-                    Listening for speech...
+                    {t('listening')}
                   </p>
                   <p className="text-[var(--color-cloud-lilac)]/40 text-xs mt-1.5">
-                    Start speaking to see transcription
+                    {t('startSpeaking')}
                   </p>
                 </>
               ) : (
@@ -94,11 +97,10 @@ export function TranscriptDisplay({
                     </div>
                   </div>
                   <p className="text-[var(--color-cloud-lilac)]/60 text-sm font-medium">
-                    Ready to transcribe
+                    {t('ready')}
                   </p>
                   <p className="text-[var(--color-cloud-lilac)]/35 text-xs mt-1.5 leading-relaxed">
-                    Click &ldquo;Start Recording&rdquo; to begin<br />
-                    capturing your meeting
+                    {t('clickStart')}
                   </p>
                 </>
               )}

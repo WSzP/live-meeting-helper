@@ -1,0 +1,66 @@
+{
+  "metadata": {
+    "title": "Live Meeting Helper",
+    "description": "Valós idejű megbeszélés átírás Google Cloud Speech-to-Text segítségével",
+    "ogAlt": "Live Meeting Helper"
+  },
+  "header": {
+    "title": "Live Meeting Helper",
+    "tagline": "MI-alapú átírás",
+    "live": "Élő",
+    "github": "GitHub"
+  },
+  "recording": {
+    "title": "Rögzítés vezérlése",
+    "connected": "Kapcsolódva",
+    "startRecording": "Rögzítés indítása",
+    "stopRecording": "Rögzítés leállítása",
+    "clearTranscript": "Átírás törlése",
+    "downloadTranscript": "Átírás letöltése",
+    "sampleRate": "Mintavételi frekvencia"
+  },
+  "aiMode": {
+    "activeAI": "Aktív MI segítség",
+    "transcribeOnly": "Csak átírás",
+    "ariaLabel": "MI asszisztens kapcsoló"
+  },
+  "transcript": {
+    "title": "Átírás",
+    "recording": "Rögzítés",
+    "chars": "karakter",
+    "listening": "Beszédre várunk...",
+    "startSpeaking": "Kezdjen el beszélni az átírás megjelenítéséhez",
+    "ready": "Készen az átírásra",
+    "clickStart": "Kattintson a \"Rögzítés indítása\" gombra a megbeszélés rögzítéséhez"
+  },
+  "ai": {
+    "title": "MI asszisztens",
+    "streaming": "Streamelés",
+    "clear": "Törlés",
+    "analyzing": "Átírás elemzése...",
+    "generating": "Intelligens meglátások generálása",
+    "disabled": "MI asszisztens kikapcsolva",
+    "enablePrompt": "Engedélyezze az MI asszisztenst az automatikus elemzéshez",
+    "insights": "MI-alapú meglátások",
+    "startPrompt": "Indítsa a rögzítést, és a meglátások automatikusan megjelennek",
+    "enableTooltip": "Kattintson az MI asszisztens engedélyezéséhez"
+  },
+  "micTest": {
+    "title": "Mikrofon teszt",
+    "description": "Rögzítsen egy 3 másodperces mintát a mikrofon teszteléséhez",
+    "testButton": "Mikrofon tesztelése",
+    "recording": "Rögzítés...",
+    "recorded": "{count} darab rögzítve",
+    "clear": "Törlés"
+  },
+  "audioLevel": {
+    "label": "Hangszint",
+    "silent": "Csendes",
+    "quiet": "Halk",
+    "good": "Jó",
+    "loud": "Hangos"
+  },
+  "errors": {
+    "microphoneAccess": "Nem sikerült hozzáférni a mikrofonhoz"
+  }
+}

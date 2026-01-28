@@ -1,5 +1,6 @@
 export { AIAnswerDisplay } from './AIAnswerDisplay'
 export { AudioLevelMeter } from './AudioLevelMeter'
+export { LanguageSwitcher } from './LanguageSwitcher'
 export { MicTest } from './MicTest'
 export { RecordingControls } from './RecordingControls'
 export { TranscriptDisplay } from './TranscriptDisplay'

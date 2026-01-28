@@ -1,5 +1,6 @@
 'use client'
 
+import { useTranslations } from 'next-intl'
 import { AudioLevelMeter } from './AudioLevelMeter'
 
 interface RecordingControlsProps {
@@ -25,6 +26,8 @@ export function RecordingControls({
   onClearTranscript,
   hasTranscript,
 }: RecordingControlsProps) {
+  const t = useTranslations('recording')
+
   return (
     <div className="space-y-5">
       {/* Main Recording Button */}
@@ -43,7 +46,7 @@ export function RecordingControls({
               <span className="absolute inline-flex h-full w-full rounded-sm bg-white/30" />
               <span className="relative inline-flex rounded-sm h-3 w-3 bg-white" />
             </span>
-            Stop Recording
+            {t('stopRecording')}
           </>
         ) : (
           <>
@@ -51,7 +54,7 @@ export function RecordingControls({
               <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z" />
               <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z" />
             </svg>
-            Start Recording
+            {t('startRecording')}
           </>
         )}
       </button>
@@ -66,7 +69,7 @@ export function RecordingControls({
       {/* Debug Info - only show when recording */}
       {isRecording && sampleRate > 0 && (
         <div className="flex items-center justify-between text-xs text-[var(--color-cloud-lilac)]/40 px-1">
-          <span>Sample Rate</span>
+          <span>{t('sampleRate')}</span>
           <span className="font-mono">{sampleRate.toLocaleString()} Hz</span>
         </div>
       )}
@@ -91,7 +94,7 @@ export function RecordingControls({
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
           </svg>
-          Clear Transcript
+          {t('clearTranscript')}
         </button>
       )}
     </div>

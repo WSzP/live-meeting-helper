@@ -1,0 +1,66 @@
+{
+  "metadata": {
+    "title": "Live Meeting Helper",
+    "description": "Real-time meeting transcription with Google Cloud Speech-to-Text",
+    "ogAlt": "Live Meeting Helper"
+  },
+  "header": {
+    "title": "Live Meeting Helper",
+    "tagline": "AI-Powered Transcription",
+    "live": "Live",
+    "github": "GitHub"
+  },
+  "recording": {
+    "title": "Recording Controls",
+    "connected": "Connected",
+    "startRecording": "Start Recording",
+    "stopRecording": "Stop Recording",
+    "clearTranscript": "Clear Transcript",
+    "downloadTranscript": "Download Transcript",
+    "sampleRate": "Sample Rate"
+  },
+  "aiMode": {
+    "activeAI": "Active AI Assistance",
+    "transcribeOnly": "Only Transcribe",
+    "ariaLabel": "AI Assistant toggle"
+  },
+  "transcript": {
+    "title": "Transcript",
+    "recording": "Recording",
+    "chars": "chars",
+    "listening": "Listening for speech...",
+    "startSpeaking": "Start speaking to see transcription",
+    "ready": "Ready to transcribe",
+    "clickStart": "Click \"Start Recording\" to begin capturing your meeting"
+  },
+  "ai": {
+    "title": "AI Assistant",
+    "streaming": "Streaming",
+    "clear": "Clear",
+    "analyzing": "Analyzing transcript...",
+    "generating": "Generating intelligent insights",
+    "disabled": "AI Assistant Disabled",
+    "enablePrompt": "Enable AI Assistant to get automatic analysis",
+    "insights": "AI-powered insights",
+    "startPrompt": "Start recording and insights will appear automatically",
+    "enableTooltip": "Click to enable AI Assistant"
+  },
+  "micTest": {
+    "title": "Microphone Test",
+    "description": "Record a 3-second sample to test your microphone",
+    "testButton": "Test Microphone",
+    "recording": "Recording...",
+    "recorded": "Recorded {count} chunks",
+    "clear": "Clear"
+  },
+  "audioLevel": {
+    "label": "Audio Level",
+    "silent": "Silent",
+    "quiet": "Quiet",
+    "good": "Good",
+    "loud": "Loud"
+  },
+  "errors": {
+    "microphoneAccess": "Failed to access microphone"
+  }
+}
